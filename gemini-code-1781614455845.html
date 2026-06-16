@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>应用下载</title>
+    <style>
+        /* 基础样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* 下载卡片样式 */
+        .download-card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 400px;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        .app-icon {
+            width: 96px;
+            height: 96px;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .app-name {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #111;
+        }
+        .app-version {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 30px;
+        }
+        .download-btn {
+            display: inline-block;
+            width: 100%;
+            background: linear-gradient(135deg, #2f54eb, #1890ff);
+            color: #fff;
+            padding: 14px 0;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(24, 144, 255, 0.3);
+            transition: transform 0.2s;
+        }
+        .download-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* 微信遮罩层样式 */
+        #weixin-tip {
+            display: none; /* 默认隐藏 */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 9999;
+        }
+        .tip-img {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 80%;
+            max-width: 320px;
+        }
+        .tip-text {
+            color: #fff;
+            position: absolute;
+            top: 160px;
+            left: 5%;
+            width: 90%;
+            font-size: 18px;
+            line-height: 1.6;
+            text-align: center;
+        }
+        .tip-text span {
+            color: #ff4d4f;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="download-card">
+        <img class="app-icon" src="https://via.placeholder.com/150" alt="App Icon">
+        <div class="app-name">我的酷炫应用</div>
+        <div class="app-version">版本: v1.0.2 | 大小: 25.6 MB</div>
+        
+        <a href="javascript:void(0);" class="download-btn" id="downloadBtn">立即下载 (APK)</a>
+    </div>
+
+    <div id="weixin-tip">
+        <svg class="tip-img" viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg">
+            <path d="M280,20 Q250,50 200,40" stroke="#ff4d4f" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+            <text x="120" y="35" fill="#fff" font-size="16" font-weight="bold">点击右上角三个点</text>
+            <defs>
+                <marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
+                    <path d="M0,0 L0,6 L9,3 z" fill="#ff4d4f"/>
+                </marker>
+            </defs>
+        </svg>
+        <div class="tip-text">
+            检测到您正在使用 <span>微信浏览器</span><br>
+            请点击右上角菜单，选择 <span>“在浏览器中打开”</span> 以继续下载。
+        </div>
+    </div>
+
+    <script>
+        // 1. 这里替换成你真实的 APK 下载直链
+        const apkUrl = "https://example.com/your-app.apk"; 
+
+        // 2. 判断是否是微信内置浏览器
+        function isWeixin() {
+            const ua = navigator.userAgent.toLowerCase();
+            return ua.indexOf('micromessenger') !== -1;
+        }
+
+        const downloadBtn = document.getElementById('downloadBtn');
+        const weixinTip = document.getElementById('weixin-tip');
+
+        // 3. 点击下载按钮的逻辑
+        downloadBtn.addEventListener('click', function(e) {
+            if (isWeixin()) {
+                // 如果是微信，拦截下载，显示遮罩层
+                e.preventDefault();
+                weixinTip.style.display = 'block';
+            } else {
+                // 如果不是微信，直接跳转到 APK 下载链接
+                window.location.href = apkUrl;
+            }
+        });
+
+        // 4. 点击遮罩层任意地方可以关闭提示
+        weixinTip.addEventListener('click', function() {
+            weixinTip.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
