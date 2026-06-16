@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="format-detection" content="telephone=no" />
 <meta name="theme-color" content="#5B6CFF" />
-<title>山东云擎 v1.0.0 - 官方下载</title>
+<title>山东云擎 v1.0.1 - 官方下载</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body { height: 100%; }
@@ -262,16 +262,16 @@
   </div>
 
   <div class="app-name">山东云擎</div>
-  <div class="app-version"><span class="version-dot"></span>v1.0.0 · 官方最新版</div>
+  <div class="app-version"><span class="version-dot"></span>v1.0.1 · 官方最新版</div>
 
   <div class="card">
     <div class="info-row">
       <span class="label">应用名称</span>
-      <span class="value">山东云擎 <span class="badge">v1.0.0</span></span>
+      <span class="value">山东云擎 <span class="badge">v1.0.1</span></span>
     </div>
     <div class="info-row">
       <span class="label">文件大小</span>
-      <span class="value" id="fileSize">检测中...</span>
+      <span class="value">139M</span>
     </div>
     <div class="info-row">
       <span class="label">适用系统</span>
@@ -370,7 +370,7 @@
   function startDownload() {
     var a = document.createElement('a');
     a.href = DOWNLOAD_URL;
-    a.download = APP_NAME + '-v1.0.0.apk';
+    a.download = APP_NAME + '-v1.0.1.apk';
     a.rel = 'noopener noreferrer';
     a.target = '_blank';
     document.body.appendChild(a);
@@ -394,35 +394,7 @@
   // 长按遮罩 / 任何位置,允许用户在微信里多次显示引导
   document.addEventListener('contextmenu', function (e) { e.preventDefault(); });
 
-  // 异步获取文件大小
-  (function fetchSize() {
-    var xhr = new XMLHttpRequest();
-    xhr.open('HEAD', DOWNLOAD_URL, true);
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === 2) {
-        var len = xhr.getResponseHeader('Content-Length');
-        if (len && !isNaN(len)) {
-          var mb = (parseInt(len, 10) / (1024 * 1024)).toFixed(2);
-          var el = document.getElementById('fileSize');
-          if (el) el.textContent = mb + ' MB';
-        } else {
-          var el2 = document.getElementById('fileSize');
-          if (el2) el2.textContent = '未知';
-        }
-        xhr.abort();
-      }
-    };
-    xhr.onerror = function () {
-      var el = document.getElementById('fileSize');
-      if (el) el.textContent = '未知';
-    };
-    try { xhr.send(); } catch (e) {
-      var el = document.getElementById('fileSize');
-      if (el) el.textContent = '未知';
-    }
-  })();
-
-  // 更新日期
+// 更新日期
   (function setDate() {
     var d = new Date();
     var pad = function (n) { return n < 10 ? '0' + n : n; };
