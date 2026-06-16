@@ -249,22 +249,7 @@
   }
 
   /* 浏览器唤起中提示 */
-  .toast {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(0,0,0,0.85);
-    color: #fff;
-    padding: 14px 22px;
-    border-radius: 12px;
-    font-size: 14px;
-    z-index: 10000;
-    display: none;
-    line-height: 1.6;
-    text-align: center;
-  }
-  .toast.show { display: block; animation: fadeIn .2s ease; }
+
 </style>
 </head>
 <body>
@@ -347,9 +332,6 @@
   </div>
 </div>
 
-<!-- 浏览器唤起 toast -->
-<div class="toast" id="toast">正在为您启动外部浏览器...</div>
-
 <script>
 (function () {
   'use strict';
@@ -366,7 +348,6 @@
   var mask = document.getElementById('wechatMask');
   var closeBtn = document.getElementById('closeMask');
   var dlBtn = document.getElementById('downloadBtn');
-  var toast = document.getElementById('toast');
   var closed = false;
 
   // 关闭遮罩
@@ -385,42 +366,8 @@
     mask.classList.add('show');
   }
 
-  // 显示 toast
-  function showToast(msg, dur) {
-    toast.textContent = msg || toast.textContent;
-    toast.classList.add('show');
-    if (toast._t) clearTimeout(toast._t);
-    toast._t = setTimeout(function () { toast.classList.remove('show'); }, dur || 1800);
-  }
-
-  // 尝试用 intent / scheme 唤起安卓默认浏览器
-  function tryOpenInBrowser() {
-    if (!isAndroid) return false;
-    // 微信里直接 intent 会被拦截,先弹遮罩
-    if (isWechat) return false;
-
-    var intentUrl = 'intent://' + DOWNLOAD_URL.replace(/^https?:\/\//, '') +
-      '#Intent;scheme=http;package=com.android.chrome;action=android.intent.action.VIEW;S.browser_fallback_url=' +
-      encodeURIComponent(DOWNLOAD_URL) + ';end';
-    try {
-      window.location = intentUrl;
-      showToast('正在为您启动外部浏览器...', 2500);
-      return true;
-    } catch (e) { return false; }
-  }
-
-  // 真正触发下载
+  // 真正触发下载 — 用户已经在外部浏览器里了,直接走下载,不跳任何东西
   function startDownload() {
-    // iOS 在微信里直接给个说明
-    if (isIOS) {
-      showToast('iOS 用户请使用「在浏览器中打开」后下载', 2500);
-      return;
-    }
-    // 安卓用 intent 尝试唤起浏览器
-    if (isAndroid && !isInApp) {
-      if (tryOpenInBrowser()) return;
-    }
-    // 普通下载
     var a = document.createElement('a');
     a.href = DOWNLOAD_URL;
     a.download = APP_NAME + '-v1.0.0.apk';
